@@ -1,0 +1,64 @@
+name: Skill evals
+
+on:
+  pull_request:
+    paths:
+      - '.claude/skills/**'
+      - 'promptfooconfig.yaml'
+      - 'evals/**'
+      - '.github/workflows/skill-evals.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.claude/skills/**'
+      - 'promptfooconfig.yaml'
+      - 'evals/**'
+      - '.github/workflows/skill-evals.yml'
+  workflow_dispatch:
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Cache promptfoo
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/promptfoo
+          key: ${{ runner.os }}-promptfoo-v1
+          restore-keys: |
+            ${{ runner.os }}-promptfoo-
+
+      - name: Require Anthropic key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "Set repository secret ANTHROPIC_API_KEY to run live skill evals."
+            exit 1
+          fi
+
+      # Claude Agent SDK reads ANTHROPIC_API_KEY from the environment.
+      # promptfoo-action posts PR comments when github-token is set.
+      - name: Run skill evals
+        uses: promptfoo/promptfoo-action@v1
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          config: promptfooconfig.yaml
+          use-config-prompts: 'true'
+          # LLM nondeterminism: 3 runs, need 2 passes
+          repeat: '3'
+          repeat-min-pass: '2'
+          cache-path: ~/.cache/promptfoo
