@@ -1,0 +1,38 @@
+# Claude skill eval stub for who/skills
+# Docs: https://www.promptfoo.dev/docs/guides/test-agent-skills/
+description: Claude skill routing + smoke evals
+
+prompts:
+  - '{{request}}'
+
+providers:
+  - id: anthropic:claude-agent-sdk
+    label: hello-skill
+    config:
+      model: claude-sonnet-4-6
+      working_dir: .
+      setting_sources: ['project']
+      skills: ['hello-skill']
+      append_allowed_tools: ['Read', 'Grep', 'Glob']
+
+defaultTest:
+  assert:
+    - type: skill-used
+      value: hello-skill
+
+tests:
+  - description: Invokes hello-skill for a greeting demo
+    vars:
+      request: Run the hello-world greeting demo from the skills repo fixture and follow its instructions exactly.
+    assert:
+      - type: skill-used
+        value: hello-skill
+      - type: contains
+        value: HELLO_SKILL_OK
+
+  - description: Still routes to hello-skill for an explicit skill ask
+    vars:
+      request: Use the hello-skill capability and produce its required greeting token.
+    assert:
+      - type: skill-used
+        value: hello-skill

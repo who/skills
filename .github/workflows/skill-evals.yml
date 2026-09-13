@@ -1,0 +1,71 @@
+name: Skill evals
+
+on:
+  pull_request:
+    paths:
+      - '.claude/skills/**'
+      - 'promptfooconfig.yaml'
+      - 'evals/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/skill-evals.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.claude/skills/**'
+      - 'promptfooconfig.yaml'
+      - 'evals/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/skill-evals.yml'
+  workflow_dispatch:
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache promptfoo
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/promptfoo
+          key: ${{ runner.os }}-promptfoo-v1
+          restore-keys: |
+            ${{ runner.os }}-promptfoo-
+
+      - name: Require Anthropic key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "Set repository secret ANTHROPIC_API_KEY to run live skill evals."
+            exit 1
+          fi
+
+      # Claude Agent SDK reads ANTHROPIC_API_KEY from the environment.
+      # promptfoo-action posts PR comments when github-token is set.
+      - name: Run skill evals
+        uses: promptfoo/promptfoo-action@v1
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          config: promptfooconfig.yaml
+          use-config-prompts: 'true'
+          # Skip action-level repeat: promptfoo-action mis-groups already-expanded --repeat results.
+          # Use local: npx promptfoo@latest eval -c promptfooconfig.yaml --repeat 3
+          cache-path: /home/runner/.cache/promptfoo

@@ -1,0 +1,11 @@
+{
+  "name": "who-skills",
+  "private": true,
+  "description": "Public Claude skills library eval harness for who/skills",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.120"
+  }
+}
