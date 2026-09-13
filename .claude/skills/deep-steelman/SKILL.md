@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: "@who"
-  version: "1.2.0"
+  version: "1.2.1"
 ---
 
 # Deep Steelman
