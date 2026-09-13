@@ -7,18 +7,13 @@ prompts:
 
 providers:
   - id: anthropic:claude-agent-sdk
-    label: hello-skill
+    label: project-skills
     config:
       model: claude-sonnet-4-6
       working_dir: .
       setting_sources: ['project']
-      skills: ['hello-skill']
+      skills: ['hello-skill', 'deep-steelman']
       append_allowed_tools: ['Read', 'Grep', 'Glob']
-
-defaultTest:
-  assert:
-    - type: skill-used
-      value: hello-skill
 
 tests:
   - description: Invokes hello-skill for a greeting demo
@@ -36,3 +31,25 @@ tests:
     assert:
       - type: skill-used
         value: hello-skill
+
+  - description: Routes steelman asks to deep-steelman
+    vars:
+      request: >-
+        Use the deep-steelman skill. Steelmans this short note into supporting
+        arguments (and a main argument if one theme fits): Markets price public
+        information quickly, so casual stock picking rarely beats a low-cost index.
+        Keep the packet brief.
+    assert:
+      - type: skill-used
+        value: deep-steelman
+      - type: contains
+        value: supporting argument
+
+  - description: Explicit Deep Steelman request still uses deep-steelman
+    vars:
+      request: >-
+        Deep Steelman this claim and emit a multi-argument steelman packet:
+        Remote work can raise output when writing and review are async-first.
+    assert:
+      - type: skill-used
+        value: deep-steelman
