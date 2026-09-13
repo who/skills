@@ -10,9 +10,8 @@ description: >-
   multi-argument steelman packet for import into an argument tool.
 license: MIT
 metadata:
-  author: steelmanner
+  author: "@who"
   version: "1.2.0"
-  posture: https://therulesofcivilconversation.org/
 ---
 
 # Deep Steelman
