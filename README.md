@@ -44,7 +44,3 @@ Live model spend only happens when that secret is set and the workflow runs (PR/
 ## Ortus (local develop loop)
 
 Ortus is optional for filing failing cases and grinding harness/skill text locally. It is not a substitute for Promptfoo CI. Keep work artifacts in beads if you use Ortus; do not park long skill bodies in grind session context.
-
-## Example fixture
-
-`hello-skill` is a tiny eval fixture that must emit `HELLO_SKILL_OK` when used. Replace or extend it with real skills.
