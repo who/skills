@@ -12,7 +12,7 @@ providers:
       model: claude-sonnet-4-6
       working_dir: .
       setting_sources: ['project']
-      skills: ['deep-steelman']
+      skills: ['deep-steelman', 'detect-slop-ui']
       append_allowed_tools: ['Read', 'Grep', 'Glob']
 
 tests:
@@ -37,3 +37,26 @@ tests:
     assert:
       - type: skill-used
         value: deep-steelman
+
+  - description: Routes a "looks AI-made" landing page screenshot to detect-slop-ui
+    vars:
+      request: >-
+        my cofounder built our landing page over a weekend and i think it
+        screams AI. screenshot: evals/fixtures/detect-slop-ui/ledgerly-home.png.
+        we're Ledgerly, bookkeeping for small creative agencies. what's making
+        it look generic and what should we change? keep it brief.
+    assert:
+      - type: skill-used
+        value: detect-slop-ui
+      - type: icontains
+        value: verif
+
+  - description: Uses detect-slop-ui for an authorship question without the word slop
+    vars:
+      request: >-
+        be honest, does this look AI generated?
+        evals/fixtures/detect-slop-ui/pager-incidents.png is our internal
+        on-call page. short answer please.
+    assert:
+      - type: skill-used
+        value: detect-slop-ui
