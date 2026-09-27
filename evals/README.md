@@ -21,3 +21,7 @@ npx promptfoo@latest eval -c promptfooconfig.yaml --repeat 3
 ## CI
 
 See `.github/workflows/skill-evals.yml`. Requires repo secret `ANTHROPIC_API_KEY`.
+
+## Fixtures
+
+Inputs referenced by test prompts live under `fixtures/<skill-name>/` (e.g. screenshots for `detect-slop-ui`).
