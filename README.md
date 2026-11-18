@@ -4,6 +4,8 @@ Public Claude skills library under [`who`](https://github.com/who).
 
 ## Skills
 
+Install with the [skills CLI](https://github.com/vercel-labs/skills). Add `-g` to install for your user instead of the current project.
+
 ### brevity
 
 Rewrites or drafts a message in terse executive email style. It runs only when you ask for it by name (`/brevity`, `@Brevity`, or "use Brevity"), never on its own.
@@ -26,6 +28,22 @@ npx skills add who/skills --skill brevity
 
 **The philosophy.** The reader's attention is the scarcest thing in any message. Put the decision where they see it first, give them only what they need to act, and move anything that needs discussion into a conversation. Short only reads as rude when the reader isn't expecting it, which is why Busch sets that expectation with his team, and why this skill is opt-in rather than a default voice. Brevity changes the wording, never the commitments: a shorter message that says something different has failed.
 
+### deep-steelman
+
+Turns an essay, transcript, article or note into steelmanned supporting arguments, critiques and mitigates each one, and builds a main argument when they share a theme.
+
+```bash
+npx skills add who/skills --skill deep-steelman
+```
+
+### detect-slop-ui
+
+Audits screenshots, live sites and frontend code for generic "AI slop" UI tropes and recommends or implements fixes specific to the product. Adapted from ["10 tells of a slop ui"](https://hereticpleb.vercel.app/blog/10-tells-of-slop) by hereticpleb.
+
+```bash
+npx skills add who/skills --skill detect-slop-ui
+```
+
 ## Layout
 
 ```text
@@ -39,7 +57,8 @@ evals/                           # Eval notes / future suites
 
 1. Create `.claude/skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`) and instructions.
 2. Add Promptfoo cases in `promptfooconfig.yaml` (assert `skill-used` and any output checks).
-3. Open a PR — CI runs when skills or evals change.
+3. Add a section under [Skills](#skills) with a one-line summary and its `npx skills add who/skills --skill <name>` command.
+4. Open a PR — CI runs when skills or evals change.
 
 ## Eval locally
 
