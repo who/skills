@@ -65,6 +65,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           config: promptfooconfig.yaml
+          promptfoo-version: 0.125.1
           use-config-prompts: 'true'
           # Skip action-level repeat: promptfoo-action mis-groups already-expanded --repeat results.
           # Use local: npx promptfoo@latest eval -c promptfooconfig.yaml --repeat 3

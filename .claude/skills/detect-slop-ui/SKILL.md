@@ -5,15 +5,18 @@ description: >-
   "AI slop" UI tropes (gradient overload, meaningless color, pulsing badges,
   accent-edge cards, decorative emoji, misalignment, default fonts and
   terminal costume, prompt residue in copy, glassmorphism, hype taglines) and
-  recommend or implement product-specific fixes. Use whenever someone says a
-  UI looks AI-generated, vibe-coded, generic, templated, bland, or "like every
+  recommend or implement product-specific fixes. Use whenever someone asks
+  whether a UI, page, or screenshot looks AI-generated, vibe-coded, generic,
+  or templated, including a quick yes/no or "short answer please" verdict;
+  load it before answering, because the trope checklist decides the verdict.
+  Also use when someone says a UI looks AI-generated, bland, or "like every
   other SaaS site", asks for a design critique or visual review of a page or
-  component, or wants an interface to feel more original or distinctive — even
+  component, or wants an interface to feel more original or distinctive, even
   if they never say "slop".
 license: MIT
 metadata:
   author: "@who"
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Detect Slop UI
