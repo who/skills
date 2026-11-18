@@ -12,7 +12,7 @@ providers:
       model: claude-sonnet-4-6
       working_dir: .
       setting_sources: ['project']
-      skills: ['deep-steelman', 'detect-slop-ui']
+      skills: ['deep-steelman', 'detect-slop-ui', 'brevity']
       append_allowed_tools: ['Read', 'Grep', 'Glob']
 
 tests:
@@ -60,3 +60,13 @@ tests:
     assert:
       - type: skill-used
         value: detect-slop-ui
+
+  - description: Routes explicit Brevity asks to brevity
+    vars:
+      request: >-
+        Use Brevity to rewrite this email: Thanks so much for putting this
+        together! I think overall it looks great, but I was wondering if maybe
+        we could move the launch to Friday?
+    assert:
+      - type: skill-used
+        value: brevity
