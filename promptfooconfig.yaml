@@ -48,8 +48,9 @@ tests:
     assert:
       - type: skill-used
         value: detect-slop-ui
-      - type: icontains
-        value: verif
+      # Flags the made-up stats; accept any wording, not just "verify".
+      - type: javascript
+        value: /verif|fabricat|made[- ]up|invented|placeholder|unsourced|fake (stat|number|metric)/i.test(output)
 
   - description: Uses detect-slop-ui for an authorship question without the word slop
     vars:
